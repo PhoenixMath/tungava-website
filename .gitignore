@@ -1,0 +1,6 @@
+.DS_Store
+Thumbs.db
+*.psd
+*.ai
+node_modules/
+.vscode/
