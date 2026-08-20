@@ -329,6 +329,10 @@ section{padding-block:var(--section-y)}
 .field textarea{min-height:110px; resize:vertical}
 .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.4)}
 .field select option{color:#111; background:#fff}
+.form-status{margin:14px 0 0; font-size:.9rem; min-height:1.4em}
+.form-status.ok{color:#7CD98A}
+.form-status.err{color:#E8836B}
+#formSubmit[disabled]{opacity:.6; cursor:not-allowed}
 .contact-line{display:flex; gap:14px; padding:18px 0; border-bottom:1px solid rgba(255,255,255,.14)}
 .contact-line:last-of-type{border-bottom:0}
 .contact-icon{color:var(--gold); flex:none; font-size:1.1rem; line-height:1.5}
@@ -751,8 +755,7 @@ body.is-loading, body.lb-open{overflow:hidden}
     </div>
 
     <div class="contact-grid">
-      <!-- Form: swap YOUR_FORM_ID for a real Formspree endpoint (formspree.io) -->
-      <form class="reveal" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <form class="reveal" id="enquiryForm" action="https://formspree.io/f/xoearwrn" method="POST">
         <div class="field">
           <label for="name">Name</label>
           <input id="name" name="name" type="text" placeholder="Your full name" required>
@@ -778,7 +781,10 @@ body.is-loading, body.lb-open{overflow:hidden}
           <label for="details">Site &amp; requirement</label>
           <textarea id="details" name="details" placeholder="Location, scale, timeline"></textarea>
         </div>
-        <button class="btn btn-gold" type="submit">Send enquiry</button>
+        <input type="hidden" name="_subject" value="New enquiry — Tungava Constructions website">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <button class="btn btn-gold" type="submit" id="formSubmit">Send enquiry</button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
       </form>
 
       <div class="reveal">
@@ -905,6 +911,47 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Contact form
+(() => {
+  const form = document.getElementById('enquiryForm');
+  if (!form) return;
+  const status = document.getElementById('formStatus');
+  const submit = document.getElementById('formSubmit');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (form.action.includes('YOUR_FORM_ID')) {
+      status.textContent = 'Form isn\'t connected yet — message the team directly via the phone or WhatsApp options.';
+      status.className = 'form-status err';
+      return;
+    }
+    submit.disabled = true;
+    status.textContent = 'Sending…';
+    status.className = 'form-status';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        status.textContent = 'Thanks — your enquiry has been sent. We\'ll get back to you shortly.';
+        status.className = 'form-status ok';
+        form.reset();
+      } else {
+        const data = await res.json().catch(() => null);
+        status.textContent = data?.errors?.[0]?.message || 'Something went wrong — please try again or reach us on WhatsApp.';
+        status.className = 'form-status err';
+      }
+    } catch {
+      status.textContent = 'Network error — please try again or reach us on WhatsApp.';
+      status.className = 'form-status err';
+    } finally {
+      submit.disabled = false;
+    }
+  });
+})();
 
 // Gallery lightbox
 (() => {
