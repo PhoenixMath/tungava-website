@@ -311,6 +311,30 @@ section{padding-block:var(--section-y)}
 /* --- Reveal on scroll --- */
 .reveal{opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease}
 .reveal.in{opacity:1; transform:none}
+
+/* --- Preloader --- */
+.preloader{
+  position:fixed; inset:0; z-index:9999;
+  background:var(--navy-900);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.preloader.is-hidden{opacity:0; visibility:hidden; pointer-events:none}
+.preloader-ring-wrap{position:relative; width:110px; height:110px; display:flex; align-items:center; justify-content:center}
+.preloader-mark{width:auto; height:56px}
+.preloader-ring{
+  position:absolute; inset:0; border-radius:50%;
+  border:3px solid rgba(198,144,47,.22);
+  border-top-color:var(--gold);
+  animation:preloader-spin 1s linear infinite;
+}
+.preloader-label{
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--gold); margin:0;
+}
+@keyframes preloader-spin{to{transform:rotate(360deg)}}
+body.is-loading{overflow:hidden}
+
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important; transition:none !important}
   html{scroll-behavior:auto}
@@ -318,7 +342,16 @@ section{padding-block:var(--section-y)}
 }
 </style>
 </head>
-<body>
+<body class="is-loading">
+
+<!-- ========== PRELOADER ========== -->
+<div class="preloader" id="preloader" role="status" aria-live="polite" aria-label="Loading">
+  <div class="preloader-ring-wrap">
+    <div class="preloader-ring"></div>
+    <img class="preloader-mark" src="images/logo-mark-light.png" alt="" onerror="this.remove()">
+  </div>
+  <p class="preloader-label">Loading</p>
+</div>
 
 <!-- ========== HEADER ========== -->
 <header class="site-header">
@@ -684,6 +717,22 @@ section{padding-block:var(--section-y)}
 </a>
 
 <script>
+// Preloader
+(() => {
+  const pre = document.getElementById('preloader');
+  if (!pre) return;
+  const hide = () => {
+    pre.classList.add('is-hidden');
+    document.body.classList.remove('is-loading');
+    setTimeout(() => pre.remove(), 600);
+  };
+  if (document.readyState === 'complete') hide();
+  else {
+    window.addEventListener('load', hide);
+    setTimeout(hide, 4000); // fallback so a slow asset can't strand the loader
+  }
+})();
+
 // Mobile nav
 const toggle = document.getElementById('navToggle');
 const links  = document.getElementById('navLinks');
