@@ -1,12 +1,11 @@
-Add site photographs here with these exact filenames:
+site-1.jpg through site-7.jpg are real project photos used in the
+"Operations in Action" gallery on the homepage. See index.html for
+the captions tied to each one before renaming or replacing any of
+them.
 
-  hero-quarry.jpg   1920px wide, landscape
-  site-1.jpg        1200x900
-  site-2.jpg        1200x900
-  site-3.jpg        1200x900
-  site-4.jpg        1200x900
-  site-5.jpg        1200x900
-  site-6.jpg        1200x900
+Still needed:
+
+  hero-quarry.jpg   1920px wide, landscape — homepage hero background
   og-image.jpg      1200x630  (social sharing preview)
 
 Compress each to under 250KB at squoosh.app before committing.
