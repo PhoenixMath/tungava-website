@@ -87,10 +87,10 @@ GitHub Pages requires a public repo on the free plan. Cloudflare Pages works wit
 
 | File | Use |
 |---|---|
-| `logo-horizontal.svg` | Letterhead, invoices, documents (light backgrounds) |
-| `logo-horizontal-light.svg` | Dark/navy backgrounds — used in the site footer |
-| `logo-mark.svg` | Monogram alone, light backgrounds |
-| `logo-mark-light.svg` | Monogram alone, dark backgrounds — used in the site header |
-| `logo-favicon.svg` | Browser tab, app icons |
+| `logo-mark.png` | Full-color crest/monogram, navy+gold — light backgrounds only (letterhead, documents) |
+| `logo-mark-light.png` | Reversed white+gold crest — used in the site header, footer, and 404 page, all on the dark navy background |
+| `logo-full.png` | Full-color stacked lockup with wordmark and tagline, navy+gold — light backgrounds only |
+| `favicon-32.png` | Browser tab icon, cropped from the crest |
+| `apple-touch-icon.png` | iOS home-screen icon, 180×180, crest on a solid `--bone` background |
 
-The wordmark uses live text with a font fallback. Before sending to any print or signage vendor, open the file in Inkscape and use **Path → Object to Path** to convert the letters to outlines.
+These are raster PNGs with transparent backgrounds (source: brand logo sheet). Ask the designer for a vector (AI/EPS/SVG) version before sending to any print or signage vendor.
