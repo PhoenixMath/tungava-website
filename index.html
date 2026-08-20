@@ -208,11 +208,11 @@ section{padding-block:var(--section-y)}
 .about-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(32px,5vw,64px); align-items:start}
 .mission{
   border-left:3px solid var(--gold); padding:4px 0 4px 22px; margin-top:28px;
-  font-family:var(--display); font-style:italic; font-size:1.22rem; color:var(--navy-700); line-height:1.5;
+  font-family:var(--display); font-weight:700; font-style:italic; font-size:1.22rem; color:var(--navy-700); line-height:1.5;
 }
 .fact-card{background:var(--navy-900); color:#fff; padding:clamp(26px,4vw,38px); border-left:5px solid var(--gold)}
 .fact-card h3{color:#fff; margin-bottom:4px}
-.fact-role{font-family:var(--display); font-style:italic; color:var(--gold-soft); margin-bottom:26px}
+.fact-role{font-family:var(--display); font-weight:700; font-style:italic; color:var(--gold-soft); margin-bottom:26px}
 .fact-row{padding-top:20px; margin-top:20px; border-top:1px solid rgba(255,255,255,.16)}
 .fact-key{font-family:var(--mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-bottom:6px}
 .fact-val{color:rgba(255,255,255,.9)}
@@ -249,19 +249,73 @@ section{padding-block:var(--section-y)}
 .client-name{font-family:var(--display); font-weight:700; font-size:1.15rem; color:var(--navy-700); line-height:1.25}
 .client-type{font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--slate); margin-top:12px}
 
+/* --- Fleet --- */
+.equip-tags{display:flex; flex-wrap:wrap; gap:12px}
+.equip-tag{
+  font-family:var(--mono); font-size:.76rem; letter-spacing:.04em;
+  color:#fff; border:1px solid rgba(255,255,255,.3); border-radius:999px;
+  padding:10px 18px; transition:border-color .18s ease, background .18s ease;
+}
+.equip-tag:hover{border-color:var(--gold); background:rgba(198,144,47,.1)}
+
 /* --- Gallery --- */
 .gallery{display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:16px}
-.shot{position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--navy-800)}
+.shot{position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--navy-800); cursor:pointer}
 .shot img{width:100%; height:100%; object-fit:cover; transition:transform .5s ease}
-.shot:hover img{transform:scale(1.05)}
+.shot:hover img, .shot:focus-visible img{transform:scale(1.05)}
 .shot figcaption{
   position:absolute; left:0; right:0; bottom:0;
   background:linear-gradient(transparent, rgba(4,22,46,.94));
   color:#fff; font-size:.86rem; padding:34px 18px 14px;
   border-left:4px solid var(--gold);
 }
-/* Placeholder shown until real photos are dropped in */
-.shot-empty{display:grid; place-items:center; color:rgba(255,255,255,.45); font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-align:center; padding:20px}
+.shot-expand{
+  position:absolute; top:12px; right:12px; width:34px; height:34px; border-radius:50%;
+  background:rgba(4,22,46,.55); backdrop-filter:blur(3px);
+  display:grid; place-items:center; color:#fff; opacity:0;
+  transition:opacity .2s ease, background .2s ease;
+}
+.shot:hover .shot-expand, .shot:focus-visible .shot-expand{opacity:1}
+.shot-expand svg{width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2}
+
+/* --- Lightbox --- */
+.lightbox{
+  position:fixed; inset:0; z-index:200;
+  background:rgba(2,10,22,.94); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center;
+  padding:clamp(16px,4vw,48px);
+  opacity:0; visibility:hidden; transition:opacity .25s ease, visibility .25s ease;
+}
+.lightbox.is-open{opacity:1; visibility:visible}
+.lb-body{
+  display:flex; flex-direction:column; max-width:1000px; max-height:100%; width:100%;
+  transform:scale(.97); transition:transform .25s ease;
+}
+.lightbox.is-open .lb-body{transform:scale(1)}
+.lb-body img{
+  width:100%; max-height:64vh; object-fit:contain; background:#000;
+  border-top:4px solid var(--gold);
+}
+.lb-info{background:var(--navy-900); color:#fff; padding:20px clamp(18px,3vw,30px)}
+.lb-count{font-family:var(--mono); font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin:0 0 8px}
+.lb-info h3{font-size:1.15rem; margin-bottom:6px}
+.lb-info p:last-child{color:rgba(255,255,255,.78); font-size:.92rem; margin:0}
+.lb-close, .lb-nav{
+  position:absolute; z-index:5; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25);
+  color:#fff; cursor:pointer; display:grid; place-items:center;
+  transition:background .18s ease, border-color .18s ease;
+}
+.lb-close:hover, .lb-nav:hover{background:rgba(255,255,255,.18); border-color:var(--gold)}
+.lb-close{top:16px; right:16px; width:42px; height:42px; border-radius:50%; font-size:1.1rem}
+.lb-nav{top:50%; translate:0 -50%; width:48px; height:48px; border-radius:50%; font-size:1.8rem; line-height:1}
+.lb-prev{left:clamp(8px,2vw,24px)}
+.lb-next{right:clamp(8px,2vw,24px)}
+@media (max-width:720px){
+  .lb-nav{width:40px; height:40px; font-size:1.5rem}
+  .lb-prev{left:6px}
+  .lb-next{right:6px}
+  .lb-body img{max-height:48vh}
+}
 
 /* --- Contact --- */
 .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:clamp(30px,5vw,60px)}
@@ -295,6 +349,7 @@ section{padding-block:var(--section-y)}
 .footer-links li{margin-bottom:10px}
 .footer-links a{text-decoration:none}
 .footer-links a:hover{color:#fff}
+.tbd{opacity:.6; text-decoration:underline dotted rgba(255,255,255,.35); text-underline-offset:3px}
 .footer-bottom{padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:.82rem; color:rgba(255,255,255,.5)}
 @media (max-width:760px){ .footer-grid{grid-template-columns:1fr} }
 
@@ -333,7 +388,7 @@ section{padding-block:var(--section-y)}
   text-transform:uppercase; color:var(--gold); margin:0;
 }
 @keyframes preloader-spin{to{transform:rotate(360deg)}}
-body.is-loading{overflow:hidden}
+body.is-loading, body.lb-open{overflow:hidden}
 
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important; transition:none !important}
@@ -572,25 +627,90 @@ body.is-loading{overflow:hidden}
   </div>
 </section>
 
+<!-- ========== FLEET ========== -->
+<section id="fleet" class="section-navy">
+  <div class="shell">
+    <div class="section-head reveal">
+      <p class="eyebrow">Equipment</p>
+      <h2 style="color:#fff">Fleet on Our Sites</h2>
+      <p class="lede" style="margin-top:16px">Machinery sized and specced to the job — not one-size-fits-all. A snapshot of what's currently mobilised.</p>
+    </div>
+
+    <div class="equip-tags reveal">
+      <span class="equip-tag">Tata Hitachi Excavators</span>
+      <span class="equip-tag">SANY Excavators</span>
+      <span class="equip-tag">JCB Excavators</span>
+      <span class="equip-tag">L&amp;T-Komatsu Excavators</span>
+      <span class="equip-tag">Track-Mounted Drill Rigs</span>
+      <span class="equip-tag">Tipper &amp; Dump Trucks</span>
+      <span class="equip-tag">Blast Mats &amp; Accessories</span>
+    </div>
+  </div>
+</section>
+
 <!-- ========== GALLERY ========== -->
 <section id="gallery">
   <div class="shell">
     <div class="section-head reveal">
       <p class="eyebrow">On Site</p>
       <h2>Operations in Action</h2>
+      <p class="lede" style="margin-top:16px">A look at recent work across quarry, civil and utility sites — select any photo for the full story.</p>
     </div>
 
-    <div class="gallery">
-      <figure class="shot reveal"><img src="images/site-1.jpg" alt="Mass earthmoving for Kalpataru's cellar works, Kokapet" loading="lazy"><figcaption>Kalpataru — cellar excavation, Kokapet</figcaption></figure>
-      <figure class="shot reveal"><img src="images/site-2.jpg" alt="Control blasting quarry site for NCC at Rajendra Nagar" loading="lazy"><figcaption>NCC — control blasting, Rajendra Nagar</figcaption></figure>
-      <figure class="shot reveal"><img src="images/site-3.jpg" alt="Backfilling works for Ramky at Attapur" loading="lazy"><figcaption>Ramky — backfilling works, Attapur</figcaption></figure>
-      <figure class="shot reveal"><img src="images/site-4.jpg" alt="Cable trenching at a Serentica Renewables solar site" loading="lazy"><figcaption>Serentica Renewables — cable trenching</figcaption></figure>
-      <figure class="shot reveal"><img src="images/site-5.jpg" alt="Tata Hitachi excavator clearing a blasted rock face" loading="lazy"><figcaption>Tata Hitachi excavator — blasted rock face</figcaption></figure>
-      <figure class="shot reveal"><img src="images/site-6.jpg" alt="Blast-hole drill rig preparing a quarry face" loading="lazy"><figcaption>Drill rig deployment — quarry face</figcaption></figure>
-      <figure class="shot reveal"><img src="images/site-7.jpg" alt="Concrete pipe being laid for canal and pipeline works" loading="lazy"><figcaption>Canal &amp; pipeline works — pipe laying</figcaption></figure>
+    <div class="gallery" id="galleryGrid">
+      <figure class="shot reveal" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Mass earthmoving for basement/cellar works on a Kalpataru development in Kokapet, Hyderabad — excavators clearing rock and rebar for the dig.">
+        <img src="images/site-1.jpg" alt="Mass earthmoving for Kalpataru's cellar works, Kokapet" loading="lazy">
+        <span class="shot-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/></svg></span>
+        <figcaption>Kalpataru — cellar excavation, Kokapet</figcaption>
+      </figure>
+      <figure class="shot reveal" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Controlled blasting on a quarry face for NCC Limited at Rajendra Nagar, with excavators loading blasted rock for haul-out.">
+        <img src="images/site-2.jpg" alt="Control blasting quarry site for NCC at Rajendra Nagar" loading="lazy">
+        <span class="shot-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/></svg></span>
+        <figcaption>NCC — control blasting, Rajendra Nagar</figcaption>
+      </figure>
+      <figure class="shot reveal" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Backfilling and site clearance for Ramky at Attapur, grading the working pad ahead of the next stage.">
+        <img src="images/site-3.jpg" alt="Backfilling works for Ramky at Attapur" loading="lazy">
+        <span class="shot-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/></svg></span>
+        <figcaption>Ramky — backfilling works, Attapur</figcaption>
+      </figure>
+      <figure class="shot reveal" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Cable trenching across a solar installation for Serentica Renewables, laid alongside the panel rows for underground cabling.">
+        <img src="images/site-4.jpg" alt="Cable trenching at a Serentica Renewables solar site" loading="lazy">
+        <span class="shot-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/></svg></span>
+        <figcaption>Serentica Renewables — cable trenching</figcaption>
+      </figure>
+      <figure class="shot reveal" tabindex="0" role="button" aria-haspopup="dialog" data-desc="A Tata Hitachi excavator working a freshly blasted quarry face, with rubber blast mats staged for the next round.">
+        <img src="images/site-5.jpg" alt="Tata Hitachi excavator clearing a blasted rock face" loading="lazy">
+        <span class="shot-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/></svg></span>
+        <figcaption>Tata Hitachi excavator — blasted rock face</figcaption>
+      </figure>
+      <figure class="shot reveal" tabindex="0" role="button" aria-haspopup="dialog" data-desc="A track-mounted drill rig preparing blast holes along a quarry face ahead of a controlled blast.">
+        <img src="images/site-6.jpg" alt="Blast-hole drill rig preparing a quarry face" loading="lazy">
+        <span class="shot-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/></svg></span>
+        <figcaption>Drill rig deployment — quarry face</figcaption>
+      </figure>
+      <figure class="shot reveal" tabindex="0" role="button" aria-haspopup="dialog" data-desc="Large-diameter concrete pipe being laid into an open trench as part of canal and pipeline works.">
+        <img src="images/site-7.jpg" alt="Concrete pipe being laid for canal and pipeline works" loading="lazy">
+        <span class="shot-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/></svg></span>
+        <figcaption>Canal &amp; pipeline works — pipe laying</figcaption>
+      </figure>
     </div>
   </div>
 </section>
+
+<!-- ========== GALLERY LIGHTBOX ========== -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Site photo viewer" hidden>
+  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous photo">‹</button>
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Next photo">›</button>
+  <div class="lb-body">
+    <img id="lbImg" src="" alt="">
+    <div class="lb-info">
+      <p class="lb-count" id="lbCount"></p>
+      <h3 id="lbTitle"></h3>
+      <p id="lbDesc"></p>
+    </div>
+  </div>
+</div>
 
 <!-- ========== INVESTMENT SNAPSHOT ========== -->
 <section id="invest" class="section-bone">
@@ -721,6 +841,8 @@ body.is-loading{overflow:hidden}
           <li><a href="#services">Services</a></li>
           <li><a href="#blasting">Blasting</a></li>
           <li><a href="#clients">Clients</a></li>
+          <li><a href="#fleet">Fleet</a></li>
+          <li><a href="#gallery">Site Work</a></li>
           <li><a href="#invest">Invest</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -728,7 +850,7 @@ body.is-loading{overflow:hidden}
 
       <div>
         <h4>Registered Details</h4>
-        <p>GSTIN: <em>add here</em><br>Udyam Reg. No: <em>add here</em></p>
+        <p>GSTIN: <span class="tbd">add here</span><br>Udyam Reg. No: <span class="tbd">add here</span></p>
         <p>2-1-21/23, Saikiran Colony, KPHB, Hyderabad, India</p>
       </div>
     </div>
@@ -783,6 +905,69 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Gallery lightbox
+(() => {
+  const shots = Array.from(document.querySelectorAll('#galleryGrid .shot'));
+  const lb = document.getElementById('lightbox');
+  if (!shots.length || !lb) return;
+
+  const lbImg   = document.getElementById('lbImg');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbDesc  = document.getElementById('lbDesc');
+  const lbCount = document.getElementById('lbCount');
+  let index = 0;
+  let lastFocused = null;
+
+  const render = () => {
+    const shot = shots[index];
+    const img = shot.querySelector('img');
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbTitle.textContent = shot.querySelector('figcaption').textContent;
+    lbDesc.textContent = shot.dataset.desc || '';
+    lbCount.textContent = `${index + 1} / ${shots.length}`;
+  };
+
+  const open = i => {
+    index = i;
+    lastFocused = document.activeElement;
+    render();
+    lb.hidden = false;
+    requestAnimationFrame(() => lb.classList.add('is-open'));
+    document.body.classList.add('lb-open');
+    document.getElementById('lbClose').focus();
+    document.addEventListener('keydown', onKey);
+  };
+
+  const close = () => {
+    lb.classList.remove('is-open');
+    document.body.classList.remove('lb-open');
+    document.removeEventListener('keydown', onKey);
+    setTimeout(() => { lb.hidden = true; }, 250);
+    if (lastFocused) lastFocused.focus();
+  };
+
+  const step = dir => { index = (index + dir + shots.length) % shots.length; render(); };
+
+  const onKey = e => {
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') step(1);
+    else if (e.key === 'ArrowLeft') step(-1);
+  };
+
+  shots.forEach((shot, i) => {
+    shot.addEventListener('click', () => open(i));
+    shot.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); }
+    });
+  });
+
+  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbPrev').addEventListener('click', () => step(-1));
+  document.getElementById('lbNext').addEventListener('click', () => step(1));
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+})();
 </script>
 
 </body>
