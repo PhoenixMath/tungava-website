@@ -19,23 +19,25 @@ images/         logo files + site photographs
 
 ## Before going live — checklist
 
-- [ ] Replace `YOUR_FORM_ID` in `index.html` with a real Formspree endpoint
-- [ ] Add site photographs: `images/hero-quarry.jpg`, `images/site-1.jpg` … `site-6.jpg`
-- [ ] Update the domain in `sitemap.xml`, `robots.txt`, and the `og:url` meta tag
+- [x] Replace `YOUR_FORM_ID` in `index.html` with a real Formspree endpoint
+- [x] Add site photographs — `images/site-1.jpg` … `site-7.jpg` (7 real project photos)
+- [x] Domain already set correctly in `sitemap.xml`, `robots.txt`, and the `og:url` meta tag (`tungavaconstructions.in`)
+- [ ] Add `images/hero-quarry.jpg` (1920px wide) — the homepage hero background is still blank
+- [ ] Create `images/og-image.jpg` (1200×630) for social sharing previews
 - [ ] Fill GSTIN and Udyam number in the footer (currently "add here")
-- [ ] Confirm the email address — currently still `svinfradevelopers8@gmail.com`
+- [ ] Confirm the public contact email — currently `svinfradevelopers8@gmail.com` (note: the Formspree account itself is registered under a different address)
 - [ ] Confirm written client consent before publishing the client names section
-- [ ] Create `og-image.jpg` (1200×630) for social sharing previews
+- [ ] Point the `tungavaconstructions.in` domain at the Cloudflare Pages deployment, if not done already
 
 ---
 
 ## Photographs
 
-| File | Size | Notes |
+| File | Size | Status |
 |---|---|---|
-| `hero-quarry.jpg` | 1920px wide | Landscape. Keep the left third uncluttered — text sits there |
-| `site-1.jpg` … `site-6.jpg` | 1200×900 | Gallery |
-| `og-image.jpg` | 1200×630 | Social sharing card |
+| `hero-quarry.jpg` | 1920px wide, landscape | **Missing** — keep the left third uncluttered, text sits there |
+| `site-1.jpg` … `site-7.jpg` | as-is | Done — 7 real project photos in the gallery |
+| `og-image.jpg` | 1200×630 | **Missing** — social sharing card |
 
 Compress every image to under 250 KB before committing — use [squoosh.app](https://squoosh.app), free and browser-based. Uncompressed phone photos are 4–8 MB each and will make the site painfully slow on site-office connections.
 
@@ -90,7 +92,10 @@ GitHub Pages requires a public repo on the free plan. Cloudflare Pages works wit
 | `logo-mark.png` | Full-color crest/monogram, navy+gold — light backgrounds only (letterhead, documents) |
 | `logo-mark-light.png` | Reversed white+gold crest — used in the site header, footer, and 404 page, all on the dark navy background |
 | `logo-full.png` | Full-color stacked lockup with wordmark and tagline, navy+gold — light backgrounds only |
+| `logo-horizontal.png` | Full-color wide wordmark with tagline, no crest — for letterhead/document headers where a stacked lockup is too tall |
 | `favicon-32.png` | Browser tab icon, cropped from the crest |
 | `apple-touch-icon.png` | iOS home-screen icon, 180×180, crest on a solid `--bone` background |
+
+All rebuilt from `Tungava_Master_Logo_Sheet.pptx` (2026-08-21) — treat that file as the source of truth for any future re-export.
 
 These are raster PNGs with transparent backgrounds (source: brand logo sheet). Ask the designer for a vector (AI/EPS/SVG) version before sending to any print or signage vendor.
